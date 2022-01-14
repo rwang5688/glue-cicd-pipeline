@@ -62,7 +62,7 @@ Resources:
             cfnresponse.send(event, context, cfnresponse.SUCCESS, {}, "CustomResourcePhysicalID")
       Handler: index.handler
       Role: !GetAtt [LambdaExecutionRole, Arn]
-      Runtime: python2.7
+      Runtime: python3.7
       Timeout: 300    
 
   rawcrawler:

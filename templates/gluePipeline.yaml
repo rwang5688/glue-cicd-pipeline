@@ -24,7 +24,7 @@ Resources:
         Type: CODEPIPELINE
       Environment:
         ComputeType: BUILD_GENERAL1_LARGE
-        Image: aws/codebuild/python:2.7.12
+        Image: aws/codebuild/python:latest
         Type: LINUX_CONTAINER
       Name: !Sub '${AWS::StackName}LT'
       ServiceRole: !GetAtt 'CodeBuildServiceRole.Arn'
@@ -38,7 +38,7 @@ Resources:
         Type: NO_ARTIFACTS
       Environment:
         ComputeType: BUILD_GENERAL1_LARGE
-        Image: aws/codebuild/python:2.7.12
+        Image: aws/codebuild/python:latest
         Type: LINUX_CONTAINER
       Name: !Sub '${AWS::StackName}initCommit'
       ServiceRole: !GetAtt 'CodePipelineServiceRole.Arn'
@@ -66,7 +66,7 @@ Resources:
           OutputArtifacts:
           - Name: appsource
           Configuration:
-            BranchName: master
+            BranchName: main
             RepositoryName: !Ref 'RepositoryName'
           RunOrder: 1
       - Name: LiveTest
@@ -147,7 +147,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Role: !GetAtt 's3LambdaCopyRole.Arn'
-      Runtime: "python2.7"
+      Runtime: "python3.7"
       Timeout: 900
       Handler: "index.handler"
       Code: 
@@ -176,7 +176,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Role: !GetAtt 's3LambdaCopyRole.Arn'
-      Runtime: "python2.7"
+      Runtime: "python3.7"
       Timeout: 300
       Handler: "index.handler"
       Code: 
@@ -202,7 +202,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Role: !GetAtt 's3LambdaCopyRole.Arn'
-      Runtime: "python2.7"
+      Runtime: "python3.7"
       Timeout: 300
       Handler: "index.handler"
       Code: 
@@ -243,7 +243,7 @@ Resources:
     DependsOn: CloudFormationRole
     Properties:
       Role: !GetAtt 's3LambdaCopyRole.Arn'
-      Runtime: "python2.7"
+      Runtime: "python3.7"
       Timeout: 900
       Handler: "index.lambda_handler"
       Code: 
