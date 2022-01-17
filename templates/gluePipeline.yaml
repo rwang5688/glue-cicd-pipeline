@@ -24,7 +24,7 @@ Resources:
         Type: CODEPIPELINE
       Environment:
         ComputeType: BUILD_GENERAL1_LARGE
-        Image: aws/codebuild/python:latest
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
         Type: LINUX_CONTAINER
       Name: !Sub '${AWS::StackName}LT'
       ServiceRole: !GetAtt 'CodeBuildServiceRole.Arn'
@@ -38,7 +38,7 @@ Resources:
         Type: NO_ARTIFACTS
       Environment:
         ComputeType: BUILD_GENERAL1_LARGE
-        Image: aws/codebuild/python:latest
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
         Type: LINUX_CONTAINER
       Name: !Sub '${AWS::StackName}initCommit'
       ServiceRole: !GetAtt 'CodePipelineServiceRole.Arn'
