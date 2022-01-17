@@ -45,7 +45,7 @@ Resources:
             client = boto3.client('s3')
             destinationbucket = os.environ['destinationbucket']
             if event['RequestType'] != 'Delete':
-               print event
+               print("event = %s" % event)
                s3 = boto3.client('s3', config=Config(signature_version='s3v4'))
                sourcebucket = os.environ['sourcebucket']
                zipKey = os.environ['zipKey']

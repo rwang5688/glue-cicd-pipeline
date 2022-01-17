@@ -13,7 +13,7 @@ user = sys.argv[1]
 reponame = sys.argv[2]
 
 path = os.getcwd() + '/' + reponame
-print path
+print("path = %s" % path)
 
 response = client.create_service_specific_credential( UserName=user, ServiceName='codecommit.amazonaws.com')
 ccresponse = codecommit.get_repository(repositoryName=reponame)
