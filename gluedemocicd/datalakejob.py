@@ -19,6 +19,7 @@ job.init(args['JOB_NAME'], args)
 sourcedatabase = args['sourcedatabase']
 destinationpath = args['destinationpath']
 region = args['region']
+print("debug: sourcedatabase=%s, destinationpath=%s, region=%s." % (sourcedatabase, destinationpath, region))
 
 glue = boto3.client('glue',region_name=region)
 
@@ -26,9 +27,9 @@ response = glue.get_tables(DatabaseName=sourcedatabase)
 if 'TableList' in response:
     for table in response['TableList']:
         sourcetable = table['Name']
-        print("reading from sourcedatabase=%s, sourcetable=%s." % (sourcedatabase, sourcetable))
+        print("debug: reading from sourcedatabase=%s, sourcetable=%s." % (sourcedatabase, sourcetable))
         datasource0 = glueContext.create_dynamic_frame.from_catalog(database = sourcedatabase, table_name = sourcetable, transformation_ctx = "datasource0")
         if datasource0.toDF().head(1):
-            print("writing to path=%s." % (destinationpath+sourcetable))
+            print("debug: writing to path=%s." % (destinationpath+sourcetable))
             datasink = glueContext.write_dynamic_frame.from_options(frame = datasource0, connection_type = "s3", connection_options = {"path": destinationpath+sourcetable}, format = "parquet", transformation_ctx = "datasink4")
 job.commit()
