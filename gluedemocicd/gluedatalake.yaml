@@ -77,7 +77,7 @@ Resources:
   datalakecrawler:
     Type: "AWS::Glue::Crawler"
     Properties:
-      Role: !GetAtt crawlerrole.Arn
+      Role: !GetAtt gluejobrole.Arn
       DatabaseName: !Join [ "_", [ "nytaxiparquet" , !Ref "AWS::StackName"  ] ]
       Targets: 
         S3Targets:
@@ -88,6 +88,7 @@ Resources:
     Properties: 
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+        - arn:aws:iam::aws:policy/AWSLakeFormationDataAdmin
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -95,6 +96,7 @@ Resources:
           Principal:
             Service:
             - glue.amazonaws.com
+            - lakeformation.amazonaws.com
           Action:
           - sts:AssumeRole
       Path: /
@@ -122,6 +124,7 @@ Resources:
     Properties:
       Role: !Ref gluejobrole
       AllocatedCapacity: 10
+      GlueVersion: 3.0
       DefaultArguments:
         "--TempDir": !Join [ "/", [ "s3:/",!Ref 'binariesBucket' , tmp/ ] ]
         "--sourcedatabase": !Join [ "_", [ "nycitytaxi" , !Ref "AWS::StackName"  ] ]
@@ -137,6 +140,7 @@ Resources:
     Properties: 
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+        - arn:aws:iam::aws:policy/AWSLakeFormationDataAdmin
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -144,7 +148,8 @@ Resources:
           Principal:
             Service:
             - glue.amazonaws.com
-            - lambda.amazonaws.com            
+            - lakeformation.amazonaws.com
+            - lambda.amazonaws.com
           Action:
           - sts:AssumeRole
       Path: /
