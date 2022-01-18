@@ -26,7 +26,9 @@ response = glue.get_tables(DatabaseName=sourcedatabase)
 if 'TableList' in response:
     for table in response['TableList']:
         sourcetable = table['Name']
+        print("reading from sourcedatabase=%s, sourcetable=%s." % (sourcedatabase, sourcetable))
         datasource0 = glueContext.create_dynamic_frame.from_catalog(database = sourcedatabase, table_name = sourcetable, transformation_ctx = "datasource0")
         if datasource0.toDF().head(1):
+            print("writing to path=%s." % (destinationpath+sourcetable))
             datasink = glueContext.write_dynamic_frame.from_options(frame = datasource0, connection_type = "s3", connection_options = {"path": destinationpath+sourcetable}, format = "parquet", transformation_ctx = "datasink4")
 job.commit()
