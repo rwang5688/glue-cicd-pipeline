@@ -24,6 +24,7 @@ print("debug: sourcedatabase=%s, destinationpath=%s, region=%s." % (sourcedataba
 glue = boto3.client('glue',region_name=region)
 
 response = glue.get_tables(DatabaseName=sourcedatabase)
+print("debug: response=%s" % (response))
 if 'TableList' in response:
     for table in response['TableList']:
         sourcetable = table['Name']
