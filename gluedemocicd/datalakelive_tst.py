@@ -55,7 +55,7 @@ class MyTestCase(unittest.TestCase):
     resources_raw = getStackResources(self.STACKNAME)
     resourcesdict = {}
     for resource in resources_raw:
-    	resourcesdict[resource['LogicalResourceId']] = resource['PhysicalResourceId']
+        resourcesdict[resource['LogicalResourceId']] = resource['PhysicalResourceId']
     sourceDatabase = getcrawlerDatabase(resourcesdict['rawcrawler'])
     destinationDatabase = getcrawlerDatabase(resourcesdict['datalakecrawler'])
     
@@ -73,8 +73,14 @@ class MyTestCase(unittest.TestCase):
     self.assertEqual(runCrawler(resourcesdict['datalakecrawler']), 'SUCCEEDED')
 
     #evaluate athena query of results have expected value
-    response = athena.start_query_execution(QueryString='select count(*) from '+destinationDatabase+'.datalake;', ResultConfiguration={'OutputLocation': 's3://'+resourcesdict['binariesBucket']+'/livetestquery1/'})
+    queryString = 'select count(*) from '+destinationDatabase+'.datalake;'
+    print('queryString: %s' % (queryString))
+    outputLocation = 's3://'+resourcesdict['binariesBucket']+'/livetestquery1/'
+    print('outputLocation: %s' % (outputLocation))
+    response = athena.start_query_execution(QueryString=queryString, ResultConfiguration={'OutputLocation': outputLocation})
+    print('response: %s' % (response))
     key = 'livetestquery1/' + response['QueryExecutionId'] + '.csv'
+    print('key: %s' %(key))
     time.sleep(5)
     s3.download_file(resourcesdict['binariesBucket'], key , 'result.csv')
     result = open('result.csv', 'r').read() 
