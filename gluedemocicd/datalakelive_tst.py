@@ -17,7 +17,7 @@ def deleteDatabase(databasename):
 	try:
 		glue.delete_database(Name=databasename)	
 	except :
-		print("cannot database: " + databasename)
+		print("cannot delete database: " + databasename)
 
 def getcrawlerDatabase(crawlername):
 	response = glue.get_crawler(Name=crawlername)
