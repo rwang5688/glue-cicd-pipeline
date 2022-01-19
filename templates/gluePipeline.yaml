@@ -511,7 +511,7 @@ Resources:
           - sts:AssumeRole
       Path: /
       ManagedPolicyArns:
-      - !Ref S3Policy
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
       - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
       - !Ref testJobPolicy
       - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
