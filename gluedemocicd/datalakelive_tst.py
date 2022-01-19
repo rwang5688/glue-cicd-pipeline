@@ -17,7 +17,7 @@ def deleteDatabase(databasename):
 	try:
 		glue.delete_database(Name=databasename)	
 	except :
-		print("table " + databasename + " did not exists")
+		print("cannot database: " + databasename)
 
 def getcrawlerDatabase(crawlername):
 	response = glue.get_crawler(Name=crawlername)
@@ -31,8 +31,8 @@ def runCrawler(crawlername):
 		time.sleep(60)
 		response = glue.get_crawler(Name=crawlername)
 		state = response['Crawler']['State']
-	print("final state " + state)	
-	print("last crawl " + response['Crawler']['LastCrawl']['Status'])	
+	print(crawlername + " final state: " + state)	
+	print(crawlername + " last crawl: " + response['Crawler']['LastCrawl']['Status'])	
 	return response['Crawler']['LastCrawl']['Status']
 
 def runJob(jobname):
@@ -40,13 +40,13 @@ def runJob(jobname):
 	jobRunid = response['JobRunId']
 	response = glue.get_job_run(JobName=jobname,RunId=jobRunid)
 	state = response['JobRun']['JobRunState']
-	print("state " + state)
+	print(jobname + " state: " + state)
 	while state == 'RUNNING':
 		time.sleep(180)
 		response = glue.get_job_run(JobName=jobname,RunId=jobRunid)
 		state = response['JobRun']['JobRunState']
-		print("state " + state)
-	print("final state " + state)	
+		print(jobname + " state: " + state)
+	print(jobname + " final state: " + state)	
 	return state
 
 
